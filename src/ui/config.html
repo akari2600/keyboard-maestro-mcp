@@ -576,6 +576,49 @@
           <div class="alert alert-success">
             Configuration saved! Restart your MCP client to apply the changes.
           </div>
+
+          <div class="divider"></div>
+
+          <div class="section-title">File System Access (Recommended)</div>
+          <p style="color: #888; margin-bottom: 12px; font-size: 0.85rem;">
+            To view captured screenshots and clipboard files, your AI assistant needs file system access to the storage directory.
+          </p>
+
+          <div id="filesystem-result" class="hidden"></div>
+
+          <div class="btn-group">
+            <button class="btn btn-secondary" id="test-filesystem-btn">Test File System Access</button>
+          </div>
+
+          <div id="filesystem-instructions" class="hidden" style="margin-top: 12px;">
+            <div class="alert alert-warning">
+              <strong>File system access not available.</strong> Add a filesystem MCP server to your config.
+            </div>
+            <div class="instructions">
+              <ol>
+                <li>Open your MCP config file</li>
+                <li>Add a <strong>filesystem</strong> server alongside keyboard-maestro:
+                  <div class="code-block" style="margin-top: 8px; font-size: 0.75rem;">
+<pre id="filesystem-json-content">"filesystem": {
+  "command": "npx",
+  "args": ["-y", "@modelcontextprotocol/server-filesystem",
+    "<span class="storage-path-placeholder">~/Documents/Keyboard Maestro MCP</span>"]
+}</pre>
+                  </div>
+                </li>
+                <li>Restart your MCP client</li>
+              </ol>
+            </div>
+          </div>
+
+          <div id="filesystem-success" class="hidden" style="margin-top: 12px;">
+            <div class="alert alert-success">
+              File system access verified! Your assistant can read files from the storage directory.
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
           <div class="btn-group">
             <button class="btn btn-primary" id="finish-setup-btn">Finish Setup</button>
           </div>

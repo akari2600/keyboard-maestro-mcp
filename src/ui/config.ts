@@ -476,6 +476,55 @@ document.getElementById("update-config-btn")!.addEventListener("click", async ()
   }
 });
 
+// Filesystem access test
+const filesystemResult = document.getElementById("filesystem-result")!;
+const filesystemInstructions = document.getElementById("filesystem-instructions")!;
+const filesystemSuccess = document.getElementById("filesystem-success")!;
+
+document.getElementById("test-filesystem-btn")!.addEventListener("click", async () => {
+  const storagePath = storagePathInput.value || "~/Documents/Keyboard Maestro MCP";
+
+  // Update the placeholder in the instructions
+  const placeholder = document.querySelector(".storage-path-placeholder");
+  if (placeholder) {
+    placeholder.textContent = storagePath;
+  }
+
+  filesystemResult.innerHTML = '<div class="loading"></div> Testing file system access...';
+  filesystemResult.className = "alert alert-info";
+  filesystemResult.classList.remove("hidden");
+  filesystemInstructions.classList.add("hidden");
+  filesystemSuccess.classList.add("hidden");
+
+  // Send a message to the model asking it to verify filesystem access
+  // The model will need to try reading from the path
+  app.updateModelContext({
+    content: [{
+      type: "text",
+      text: JSON.stringify({
+        action: "test_filesystem_access",
+        storagePath: storagePath,
+        message: `Please verify you can read files from: ${storagePath}. Try to list the contents of this directory. If you cannot access it, explain that the user needs to set up a filesystem MCP server.`,
+      }),
+    }],
+  });
+
+  // Since we can't get a synchronous response, show instructions after a delay
+  // and let the model's response in the chat confirm success/failure
+  setTimeout(() => {
+    filesystemResult.classList.add("hidden");
+    // Show instructions by default - the model's response will indicate if it worked
+    filesystemInstructions.classList.remove("hidden");
+
+    // Also show a note that they should check the chat
+    const note = document.createElement("div");
+    note.className = "alert alert-info";
+    note.style.marginBottom = "12px";
+    note.innerHTML = "Check the chat for the test result. If your assistant couldn't access the directory, follow the instructions below.";
+    filesystemInstructions.insertBefore(note, filesystemInstructions.firstChild);
+  }, 1000);
+});
+
 document.getElementById("finish-setup-btn")!.addEventListener("click", () => {
   app.updateModelContext({
     content: [{

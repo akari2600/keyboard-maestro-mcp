@@ -29,7 +29,7 @@ export const MACROS_TEMPLATE = `<?xml version="1.0" encoding="UTF-8"?>
 						<key>MacroActionType</key>
 						<string>SetVariableToText</string>
 						<key>Text</key>
-						<string>"{{MCP_FILE_PATH}}"</string>
+						<string>{{MCP_FILE_PATH}}</string>
 						<key>Variable</key>
 						<string>KeyboardMaestroMcpPath</string>
 					</dict>
