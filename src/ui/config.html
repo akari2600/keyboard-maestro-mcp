@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keyboard Maestro MCP Config</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #1a1a1a;
+      color: #e0e0e0;
+      padding: 20px;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #fff;
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .subtitle {
+      color: #888;
+      margin-bottom: 20px;
+      font-size: 0.85rem;
+    }
+
+    .card {
+      background: #252525;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .badge {
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .badge-success {
+      background: rgba(34, 197, 94, 0.2);
+      color: #4ade80;
+    }
+
+    .badge-error {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+    }
+
+    .badge-warning {
+      background: rgba(234, 179, 8, 0.2);
+      color: #facc15;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      color: #888;
+      margin-bottom: 4px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 0.9rem;
+      border: 1px solid #404040;
+      border-radius: 6px;
+      background: #1a1a1a;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      border-color: #6366f1;
+    }
+
+    input::placeholder {
+      color: #555;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #6366f1;
+      color: #fff;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #5558e3;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid #404040;
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      background: #333;
+      border-color: #555;
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+    }
+
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .btn-group .btn {
+      flex: 1;
+    }
+
+    .help-text {
+      font-size: 0.8rem;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .alert {
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+    }
+
+    .alert-info {
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #a5b4fc;
+    }
+
+    .alert-success {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #4ade80;
+    }
+
+    .alert-error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+    }
+
+    .alert-warning {
+      background: rgba(234, 179, 8, 0.15);
+      border: 1px solid rgba(234, 179, 8, 0.3);
+      color: #facc15;
+    }
+
+    .instructions {
+      background: #1e1e1e;
+      border-radius: 6px;
+      padding: 14px;
+      margin: 12px 0;
+    }
+
+    .instructions ol {
+      margin-left: 18px;
+    }
+
+    .instructions li {
+      margin-bottom: 8px;
+      color: #ccc;
+    }
+
+    .instructions strong {
+      color: #fff;
+    }
+
+    .step-indicator {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .step {
+      flex: 1;
+      height: 3px;
+      border-radius: 2px;
+      background: #333;
+    }
+
+    .step.active {
+      background: #6366f1;
+    }
+
+    .step.complete {
+      background: #22c55e;
+    }
+
+    .machine-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .machine-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      background: #1e1e1e;
+      border-radius: 6px;
+    }
+
+    .machine-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .machine-name {
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .machine-host {
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    .machine-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .code {
+      font-family: "SF Mono", Monaco, monospace;
+      background: #333;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85em;
+    }
+
+    .code-block {
+      font-family: "SF Mono", Monaco, monospace;
+      background: #1e1e1e;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+      position: relative;
+    }
+
+    .code-block .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 4px 8px;
+      font-size: 0.7rem;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .divider {
+      height: 1px;
+      background: #333;
+      margin: 16px 0;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #444;
+      border-top-color: #6366f1;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 32px;
+      color: #666;
+    }
+
+    .empty-state p {
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <h1>Keyboard Maestro MCP</h1>
+    <p class="subtitle">Configure machines and macros</p>
+
+    <!-- Loading State -->
+    <div id="loading-view">
+      <div class="card">
+        <div style="text-align: center; padding: 20px;">
+          <div class="loading"></div>
+          <p style="margin-top: 12px; color: #888;">Loading configuration...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Setup Wizard -->
+    <div id="setup-view" class="hidden">
+      <div class="step-indicator">
+        <div class="step" id="step-1"></div>
+        <div class="step" id="step-2"></div>
+        <div class="step" id="step-3"></div>
+        <div class="step" id="step-4"></div>
+      </div>
+
+      <!-- Step 1: Welcome -->
+      <div id="setup-step-1" class="hidden">
+        <div class="card">
+          <h2>Welcome!</h2>
+          <p style="color: #ccc; margin-bottom: 16px;">
+            Let's set up Keyboard Maestro MCP to connect to your Mac(s).
+          </p>
+
+          <div class="alert alert-info">
+            Before we begin, make sure Keyboard Maestro's Web Server is enabled on your Mac.
+          </div>
+
+          <div class="instructions">
+            <ol>
+              <li>Open <strong>Keyboard Maestro</strong> on your Mac</li>
+              <li>Go to <strong>Keyboard Maestro → Preferences</strong> (or press <span class="code">⌘,</span>)</li>
+              <li>Click the <strong>Web Server</strong> tab</li>
+              <li>Check <strong>Web Server Enabled</strong></li>
+              <li>Set a <strong>Username</strong> and <strong>Password</strong></li>
+              <li>Note the <strong>HTTP Port</strong> (default: 4490)</li>
+            </ol>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn btn-primary" id="setup-start-btn">I've enabled the Web Server</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Add Machine -->
+      <div id="setup-step-2" class="hidden">
+        <div class="card">
+          <h2>Add a Machine</h2>
+          <p style="color: #888; margin-bottom: 16px;">
+            Enter the connection details from Keyboard Maestro's Web Server preferences.
+          </p>
+
+          <div class="form-group">
+            <label for="machine-name">Machine Name</label>
+            <input type="text" id="machine-name" placeholder="e.g., MacBook Pro, Studio">
+            <p class="help-text">A friendly name to identify this Mac</p>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="machine-host">Host / IP Address</label>
+              <input type="text" id="machine-host" placeholder="localhost or 192.168.1.100">
+            </div>
+            <div class="form-group" style="flex: 0 0 100px;">
+              <label for="machine-port">Port</label>
+              <input type="number" id="machine-port" placeholder="4490" value="4490">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="machine-username">Username</label>
+              <input type="text" id="machine-username" placeholder="From Web Server preferences">
+            </div>
+            <div class="form-group">
+              <label for="machine-password">Password</label>
+              <input type="password" id="machine-password" placeholder="From Web Server preferences">
+            </div>
+          </div>
+
+          <div class="alert alert-warning" style="font-size: 0.8rem;">
+            <strong>Port spacing:</strong> Keyboard Maestro uses two ports per machine (HTTP and HTTPS).
+            If adding multiple machines, space ports by at least 2 (e.g., 4490, 4492, 4494).
+          </div>
+
+          <div id="test-result" class="hidden"></div>
+
+          <div class="btn-group">
+            <button class="btn btn-secondary" id="test-connection-btn">Test Connection</button>
+            <button class="btn btn-primary" id="add-machine-btn" disabled>Add Machine</button>
+          </div>
+        </div>
+
+        <!-- Added Machines List -->
+        <div id="added-machines" class="card hidden">
+          <div class="section-title">Added Machines</div>
+          <div class="machine-list" id="machine-list"></div>
+          <div class="btn-group">
+            <button class="btn btn-secondary" id="add-another-btn">Add Another Machine</button>
+            <button class="btn btn-primary" id="continue-to-config-btn">Continue</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Macro Setup -->
+      <div id="setup-step-3" class="hidden">
+        <div class="card">
+          <h2>Install Macros</h2>
+          <p style="color: #888; margin-bottom: 16px;">
+            Generate and import the required Keyboard Maestro macros.
+          </p>
+
+          <div class="form-group">
+            <label for="storage-path">Clipboard Storage Path</label>
+            <input type="text" id="storage-path" placeholder="~/Documents/Keyboard Maestro MCP">
+            <p class="help-text">Where clipboard files will be saved. Use a synced folder for multi-machine setups.</p>
+          </div>
+
+          <div class="form-row" style="gap: 6px;">
+            <button class="btn btn-sm btn-secondary" data-storage-path="~/Documents/Keyboard Maestro MCP">Documents</button>
+            <button class="btn btn-sm btn-secondary" data-storage-path="~/Library/Mobile Documents/com~apple~CloudDocs/Documents/Keyboard Maestro MCP">iCloud</button>
+          </div>
+
+          <div id="macro-result" class="hidden" style="margin-top: 12px;"></div>
+
+          <div class="btn-group">
+            <button class="btn btn-primary" id="generate-macros-btn">Generate Macros</button>
+          </div>
+        </div>
+
+        <div id="import-instructions" class="card hidden">
+          <div class="section-title">Import Instructions</div>
+          <div class="instructions">
+            <ol>
+              <li><strong>Import the macros</strong> into Keyboard Maestro:<br>
+                Go to <strong>File → Import → Import Macros Safely...</strong><br>
+                Select the downloaded <span class="code">keyboard-maestro-mcp.kmmacros</span> file
+              </li>
+              <li><strong>Enable the macro group:</strong><br>
+                Click on the "Keyboard Maestro MCP" group in the sidebar<br>
+                Uncheck the <strong>"Disabled"</strong> checkbox at the top
+              </li>
+              <li><strong>Verify</strong> the group appears with two macros enabled</li>
+            </ol>
+          </div>
+
+          <div id="verify-result" class="hidden"></div>
+
+          <div class="btn-group">
+            <button class="btn btn-secondary" id="verify-import-btn">Verify Import</button>
+            <button class="btn btn-primary" id="continue-to-config-btn-step3">Continue</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: MCP Config -->
+      <div id="setup-step-4" class="hidden">
+        <div class="card">
+          <h2>Update MCP Configuration</h2>
+          <p style="color: #888; margin-bottom: 16px;">
+            Final step! Update your MCP config file to connect to your machine(s).
+          </p>
+
+          <div class="form-group">
+            <label for="config-path">Config File Path</label>
+            <input type="text" id="config-path" placeholder="~/Library/Application Support/Claude/claude_desktop_config.json">
+          </div>
+
+          <div class="form-row" style="gap: 6px;">
+            <button class="btn btn-sm btn-secondary" data-config-path="claude-desktop">Claude Desktop</button>
+            <button class="btn btn-sm btn-secondary" data-config-path="claude-code">Claude Code</button>
+          </div>
+
+          <div id="config-preview" class="hidden" style="margin-top: 16px;">
+            <div class="section-title">Configuration JSON</div>
+            <div class="code-block" id="config-json">
+              <button class="btn btn-sm btn-secondary copy-btn" id="copy-config-btn">Copy</button>
+              <pre id="config-json-content"></pre>
+            </div>
+          </div>
+
+          <div id="config-result" class="hidden" style="margin-top: 12px;"></div>
+
+          <div class="btn-group">
+            <button class="btn btn-secondary" id="show-json-btn">Show JSON to Copy</button>
+            <button class="btn btn-primary" id="update-config-btn">Update Config File</button>
+          </div>
+        </div>
+
+        <div id="finish-card" class="card hidden">
+          <div class="alert alert-success">
+            Configuration saved! Restart your MCP client to apply the changes.
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-primary" id="finish-setup-btn">Finish Setup</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Management View -->
+    <div id="manage-view" class="hidden">
+      <!-- Machines Section -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Machines</span>
+          <button class="btn btn-sm btn-secondary" id="add-machine-manage-btn">+ Add Machine</button>
+        </div>
+
+        <div id="manage-machine-list" class="machine-list">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div id="no-machines" class="empty-state hidden">
+          <p>No machines configured</p>
+          <button class="btn btn-primary" id="setup-first-machine-btn">Add Your First Machine</button>
+        </div>
+      </div>
+
+      <!-- Macro Group Section -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Macro Group</span>
+        </div>
+
+        <div id="macro-status"></div>
+
+        <div class="form-group" style="margin-top: 12px;">
+          <label for="manage-storage-path">Storage Path</label>
+          <input type="text" id="manage-storage-path" placeholder="~/Documents/Keyboard Maestro MCP">
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-secondary" id="regenerate-macros-btn">Regenerate Macros</button>
+        </div>
+
+        <div id="regenerate-warning" class="alert alert-warning hidden" style="margin-top: 12px;">
+          <strong>Important:</strong> Before importing the new macro file, delete the existing
+          "Keyboard Maestro MCP" group in Keyboard Maestro to avoid duplicates.
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Machine Modal -->
+    <div id="edit-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; padding: 20px;">
+      <div class="card" style="width: 100%; max-width: 500px;">
+        <h2 id="edit-modal-title">Edit Machine</h2>
+
+        <div class="form-group">
+          <label for="edit-machine-name">Machine Name</label>
+          <input type="text" id="edit-machine-name">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="edit-machine-host">Host</label>
+            <input type="text" id="edit-machine-host">
+          </div>
+          <div class="form-group" style="flex: 0 0 100px;">
+            <label for="edit-machine-port">Port</label>
+            <input type="number" id="edit-machine-port">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="edit-machine-username">Username</label>
+            <input type="text" id="edit-machine-username">
+          </div>
+          <div class="form-group">
+            <label for="edit-machine-password">Password</label>
+            <input type="password" id="edit-machine-password">
+          </div>
+        </div>
+
+        <div id="edit-test-result" class="hidden"></div>
+
+        <div class="btn-group">
+          <button class="btn btn-secondary" id="edit-cancel-btn">Cancel</button>
+          <button class="btn btn-secondary" id="edit-test-btn">Test</button>
+          <button class="btn btn-primary" id="edit-save-btn">Save</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <button class="btn btn-danger" id="edit-delete-btn" style="width: 100%;">Delete Machine</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./config.ts"></script>
+</body>
+</html>
